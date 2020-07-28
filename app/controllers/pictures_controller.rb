@@ -16,8 +16,8 @@ class PicturesController < ApplicationController
   end
 
   def create
-    @picture = Picture.new(picture_params)
-
+    @picture = current_user.pictures.build(picture_params)
+    @user = @picture.user.name
     respond_to do |format|
       if @picture.save
         format.html { redirect_to @picture, notice: 'Picture was successfully created.' }
@@ -53,6 +53,7 @@ class PicturesController < ApplicationController
     def set_picture
       @picture = Picture.find(params[:id])
     end
+
     def picture_params
       params.require(:picture).permit(:image, :image_cache)
     end
